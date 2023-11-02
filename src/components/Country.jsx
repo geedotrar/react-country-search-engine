@@ -10,6 +10,8 @@ const Country = () => {
   const [countryData, setCountryData] = useState(null);
   const [callingCodeData, setCallingCodeData] = useState(null);
   const [currencyData, setCurrencyData] = useState(null);
+  const [showCallingCodeTooltip, setShowCallingCodeTooltip] = useState(false);
+  const [showCurrencyTooltip, setShowCurrencyTooltip] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -57,6 +59,21 @@ const Country = () => {
 
   const latLong = `${countryData[0].latlng[0].toFixed(1)}, ${countryData[0].latlng[1].toFixed(1)}`;
 
+  const handleCallingCodeMouseOver = () => {
+    setShowCallingCodeTooltip(true);
+  };
+
+  const handleCallingCodeMouseOut = () => {
+    setShowCallingCodeTooltip(false);
+  };
+
+  const handleCurrencyMouseOver = () => {
+    setShowCurrencyTooltip(true);
+  };
+
+  const handleCurrencyCodeMouseOut = () => {
+    setShowCurrencyTooltip(false);
+  };
   return (
     <div className="w-[1440px] h-[900px] relative bg-white">
       <div className="w-[540px] h-[143px] left-[90px] top-[297px] absolute bg-white rounded-[5px] shadow" />
@@ -117,17 +134,45 @@ const Country = () => {
       <div className="left-[655px] top-[480px] absolute text-center text-black text-lg font-medium font-['SF Pro Text']">Currency</div>
 
       <div className="left-[90px] top-[574px] absolute">
-        <span className="cursor-pointer" style={{ color: "violet", fontSize: "0.875rem", fontWeight: "500", fontFamily: "SF Pro Text", textDecoration: "underline" }}>
+        <span
+          onMouseOver={handleCallingCodeMouseOver}
+          onMouseOut={handleCallingCodeMouseOut}
+          className="cursor-pointer"
+          style={{ color: "violet", fontSize: "0.875rem", fontWeight: "500", fontFamily: "SF Pro Text", textDecoration: "underline" }}
+        >
           {callingCodeData && callingCodeData.length !== null ? callingCodeData.length : 1} country
         </span>
-        <span style={{ color: "black", fontSize: "0.875rem", fontWeight: "500", fontFamily: "SF Pro Text" }}> with this calling code</span>
+        <span style={{ color: "black", fontSize: "0.875rem", fontWeight: "500", fontFamily: "SF Pro Text", marginLeft: "5px" }}>with this calling code</span>
+        {showCallingCodeTooltip && callingCodeData && callingCodeData.length > 0 && (
+          <div>
+            <ul>
+              {callingCodeData.map((dt, index) => (
+                <li key={index}>{dt.name}</li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
 
       <div className="left-[655px] top-[574px] absolute">
-        <span className="cursor-pointer" style={{ color: "violet", fontSize: "0.875rem", fontWeight: "500", fontFamily: "SF Pro Text", textDecoration: "underline" }}>
+        <span
+          onMouseOver={handleCurrencyMouseOver}
+          onMouseOut={handleCurrencyCodeMouseOut}
+          className="cursor-pointer"
+          style={{ color: "violet", fontSize: "0.875rem", fontWeight: "500", fontFamily: "SF Pro Text", textDecoration: "underline" }}
+        >
           {currencyData && currencyData.length !== null ? currencyData.length : 1} country
         </span>
         <span style={{ color: "black", fontSize: "0.875rem", fontWeight: "500", fontFamily: "SF Pro Text" }}> with this currency</span>
+        {showCurrencyTooltip && currencyData && currencyData.length > 0 && (
+          <div>
+            <ul>
+              {currencyData.map((dt, index) => (
+                <li key={index}>{dt.name}</li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );
