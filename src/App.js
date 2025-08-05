@@ -1,5 +1,5 @@
-import Country from "./components/Country";
-import Homepage from "./components/Homepage";
+import Country from "./pages/Country";
+import Homepage from "./pages/Homepage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
